@@ -55,10 +55,10 @@ class Commandline:
 @pytest_asyncio.fixture(name="mock_libs")
 def _helper_libs():
     """Patch ssl and pyserial-async libs."""
-    with patch('pymodbus.server.async_io.create_serial_connection') as mock_serial:
-        with patch('ssl.SSLContext.load_cert_chain'):
-            mock_serial.return_value = (MagicMock(), MagicMock())
-            yield True
+    with patch('pymodbus.server.async_io.create_serial_connection') as mock_serial, \
+         patch('ssl.SSLContext.load_cert_chain'):
+        mock_serial.return_value = (MagicMock(), MagicMock())
+        yield True
 
 
 @pytest_asyncio.fixture(name="mock_run_server")

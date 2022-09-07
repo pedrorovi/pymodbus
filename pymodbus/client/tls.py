@@ -104,13 +104,12 @@ class AsyncModbusTlsClient(AsyncModbusTcpClient):
 
     async def connect(self):
         """Initiate connection to start client."""
-        # get current loop, if there are no loop a RuntimeError will be raised
-        self.loop = asyncio.get_running_loop()
-        return await AsyncModbusTcpClient.connect(self)
+        return await self._connect()
 
     async def _connect(self):
         """Connect to server."""
-        _logger.debug("Connecting.")
+        self.loop = asyncio.get_running_loop()
+        _logger.debug("Connecting tls.")
         try:
             return await self.loop.create_connection(
                 self._create_protocol,

@@ -53,7 +53,7 @@ def sslctx_provider(
     if sslctx is None:
         # According to MODBUS/TCP Security Protocol Specification, it is
         # TLSv2 at least
-        sslctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        sslctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         sslctx.load_cert_chain(certfile=certfile, keyfile=keyfile, password=password)
 
     if reqclicert:

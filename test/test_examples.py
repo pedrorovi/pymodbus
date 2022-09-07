@@ -145,7 +145,7 @@ async def test_exp_async_framer(  # pylint: disable=unused-argument
     test_type
 ):
     """Test client-server async with different framers and calls."""
-    if test_type == run_async_ext_calls:  # pylint: disable=comparison-with-callable
+    if test_type == run_async_ext_calls and test_framer == ModbusRtuFramer:  # pylint: disable=comparison-with-callable
         return
     if test_comm == "tls":
         # mocking cert operations prevent connect.

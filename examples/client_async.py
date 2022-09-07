@@ -23,6 +23,7 @@ The corresponding server must be started before e.g. as:
 import argparse
 import asyncio
 import logging
+import ssl
 
 # --------------------------------------------------------------------------- #
 # import the various client implementations
@@ -96,8 +97,11 @@ def setup_async_client(args=None):
             #    handle_local_echo=False,
         )
     elif args.comm == "tls":
+        sslctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        sslctx.check_hostname = False
+        sslctx.verify_mode = ssl.CERT_NONE
         client = AsyncModbusTlsClient(
-            "localhost",
+            "127.0.0.1",
             port=args.port,
             # Common optional paramers:
             framer=args.framer,
@@ -107,11 +111,11 @@ def setup_async_client(args=None):
             #    close_comm_on_error=False,
             #    strict=True,
             # TLS setup parameters
-            #    sslctx=None,
-            #    certfile=None,
-            #    keyfile=None,
+            sslctx=sslctx,
+            #    certfile="./certificate.pem",
+            #    keyfile="./key.pem",
             #    password=None,
-            #    server_hostname="localhost",
+            server_hostname="localhost",
         )
     return client
 

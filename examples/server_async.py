@@ -30,6 +30,7 @@ The corresponding client can be started as:
 import argparse
 import asyncio
 import logging
+import ssl
 
 from pymodbus.datastore import (
     ModbusSequentialDataBlock,
@@ -205,6 +206,9 @@ async def run_async_server(args=None):
         )
     elif server_id == "tls":
         address = ("", port) if port else None
+        sslctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        sslctx.check_hostname = False
+        sslctx.verify_mode = ssl.CERT_NONE
         server = await StartAsyncTlsServer(
             context=store,  # Data storage
             host="localhost",  # define tcp address where to connect to.
@@ -215,9 +219,9 @@ async def run_async_server(args=None):
             framer=framer,  # The framer strategy to use
             # handler=None,  # handler for each session
             allow_reuse_address=True,  # allow the reuse of an address
-            # certfile=None,  # The cert file path for TLS (used if sslctx is None)
-            # sslctx=None,  # The SSLContext to use for TLS (default None and auto create)
-            # keyfile=None,  # The key file path for TLS (used if sslctx is None)
+            # certfile="./certificate.pem",  # The cert file path for TLS (used if sslctx is None)
+            sslctx=sslctx,  # The SSLContext to use for TLS (default None and auto create)
+            # keyfile="./key.pem",  # The key file path for TLS (used if sslctx is None)
             # password=None,  # The password for for decrypting the private key file
             # reqclicert=False,  # Force the sever request client"s certificate
             # ignore_missing_slaves=True,  # ignore request to a missing slave

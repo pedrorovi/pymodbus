@@ -196,4 +196,4 @@ def get_commandline():
 if __name__ == "__main__":
     # Connect/disconnect no calls.
     testclient = setup_async_client()
-    asyncio.run(run_async_client(testclient))
+    asyncio.run(run_async_client(testclient), debug=True)
